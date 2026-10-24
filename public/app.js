@@ -219,7 +219,7 @@ tab('bandotuduy','Bản đồ tư duy',el=>{
     const wrap=s=>{s=String(s);if(s.length<=24)return[s];let i=s.lastIndexOf(' ',24);if(i<8)i=24;return[s.slice(0,i),s.slice(i).trim().slice(0,24)]};
     $('#mm-o',el).innerHTML=`<div class="svgwrap"><svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="Bản đồ tư duy ${esc(t)}">`+
       links.map(([a,b])=>{const x1=a.dep*(W+GX)+W,y1=a.y+H/2+5,x2=b.dep*(W+GX),y2=b.y+H/2+5;return `<path d="M${x1} ${y1}C${x1+GX/2} ${y1} ${x2-GX/2} ${y2} ${x2} ${y2}" fill="none" stroke="#7f9a97" stroke-width="1.4"/>`}).join('')+
-      nodes.map(n=>{const L=wrap(n.t),root=!n.dep;return `<g transform="translate(${n.dep*(W+GX)},${n.y+5})"><rect width="${W}" height="${H}" rx="7" fill="${root?'#0f6b63':'#ffffff'}" stroke="#0f6b63" stroke-width="1.2"/>${L.map((s,i)=>`<text x="${W/2}" y="${L.length>1?14+i*13:H/2+4}" text-anchor="middle" font-size="${L.length>1?11:12}" font-family="Be Vietnam Pro,sans-serif" fill="${root?'#ffffff':'#1b2a2f'}">${esc(s)}</text>`).join('')}</g>`}).join('')+'</svg></div>';
+      nodes.map(n=>{const L=wrap(n.t),root=!n.dep;return `<g transform="translate(${n.dep*(W+GX)},${n.y+5})"><rect width="${W}" height="${H}" rx="7" fill="${root?'#3f6fe0':'#ffffff'}" stroke="#3f6fe0" stroke-width="1.2"/>${L.map((s,i)=>`<text x="${W/2}" y="${L.length>1?14+i*13:H/2+4}" text-anchor="middle" font-size="${L.length>1?11:12}" font-family="Source Sans 3,sans-serif" fill="${root?'#ffffff':'#1b2a2f'}">${esc(s)}</text>`).join('')}</g>`}).join('')+'</svg></div>';
   })};
 });
 
@@ -258,15 +258,30 @@ tab('saochep','Sao chép quy trình',el=>{
 });
 
 /* ---------- shell ---------- */
-const nav=$('#nav'),main=$('#main'),built={};
-function open(id){
-  nav.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',b.dataset.id==id));
-  main.querySelectorAll('section').forEach(s=>s.hidden=s.dataset.id!=id);
-  const t=TABS.find(t=>t.id==id);
-  if(!built[id]){const s=document.createElement('section');s.className='tab';s.dataset.id=id;main.append(s);built[id]=s;t.build(s)}
-  else if(id=='thongke')built[id].draw();
-  else if(id=='hoso')t.build(built[id]);
-  try{localStorage.setItem('xs_tab',id)}catch{}
+const main=$('#main'),home=$('#home'),work=$('#work'),built={};
+// [icon, mô tả ngắn, chữ trên nút] cho thẻ ở trang chủ
+const META={
+  quytrinh:['🧭','Dựng quy trình 4 bước cho bài toán, khái niệm hoặc định lí và đi qua từng bước.','🚀 Dựng quy trình'],
+  bang:['📝','Chấm điểm theo barem từ ảnh chụp, file PDF hoặc bài viết tay trên bảng.','✍️ Nộp bài chấm'],
+  giongnoi:['🎤','Hỏi đáp bằng giọng nói, viết công thức lên bảng khi cần.','🎧 Bắt đầu hỏi'],
+  tuluan:['✏️','AI sinh 5 bài tự luận tương tự, chỉ kèm chiến lược giải.','🧩 Tạo 5 bài'],
+  tracnghiem:['✅','Làm trắc nghiệm, có điểm ngay và hỏi AI vì sao đúng, sai.','⚡ Làm trắc nghiệm'],
+  vandap:['💬','Trả lời câu hỏi lí thuyết, AI chỉ ra lỗ hổng kiến thức.','🎯 Vào vấn đáp'],
+  thongke:['📊','Tổng hợp các câu sai và hướng khắc phục từng nhóm lỗi.','📈 Xem thống kê'],
+  bandotuduy:['🗺️','Bản đồ tư duy giúp nhìn toàn cảnh một chủ đề.','🌿 Vẽ bản đồ'],
+  diendan:['💡','Trao đổi, hỏi đáp và chia sẻ cách giải cùng bạn học.','🗨️ Vào diễn đàn'],
+  hoso:['🏆','Hồ sơ cá nhân: lỗi hay mắc và kế hoạch bổ trợ 2 tuần.','🔥 Mở hồ sơ'],
+  saochep:['🧬','Dán một bài, khái niệm hoặc định lí để nhân bản quy trình 4 bước.','🪄 Tạo bản sao'],
+};
+$('#cards').innerHTML=TABS.map((t,i)=>{const m=META[t.id];return `<a class="fcard c${i%4}" href="#${t.id}"><span class="lab">TÍNH NĂNG ${i+1}</span><span class="ico" aria-hidden="true">${m[0]}</span><h3>${t.title}</h3><p>${m[1]}</p><span class="go">${m[2]}</span></a>`}).join('');
+function show(){
+  const t=TABS.find(t=>t.id==location.hash.slice(1));
+  home.hidden=!!t;work.hidden=!t;window.scrollTo(0,0);
+  document.title=t?t.title+' · Xác Suất AI':'Xác Suất AI';
+  if(!t)return;
+  main.querySelectorAll('section').forEach(s=>s.hidden=s.dataset.id!=t.id);
+  if(!built[t.id]){const s=document.createElement('section');s.className='tab';s.dataset.id=t.id;main.append(s);built[t.id]=s;t.build(s)}
+  else if(t.id=='thongke')built[t.id].draw();
+  else if(t.id=='hoso')t.build(built[t.id]);
 }
-TABS.forEach((t,i)=>{const b=document.createElement('button');b.dataset.id=t.id;b.setAttribute('role','tab');b.innerHTML=`<b>${String(i+1).padStart(2,'0')}</b><span>${t.title}</span>`;b.onclick=()=>open(t.id);nav.append(b)});
-const saved=LS.get('xs_tab',null);open(TABS.some(t=>t.id==saved)?saved:TABS[0].id);
+addEventListener('hashchange',show);show();

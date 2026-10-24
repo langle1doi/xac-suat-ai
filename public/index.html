@@ -4,16 +4,34 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Xác Suất AI</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<svg class="deco" aria-hidden="true" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice" fill="none" stroke="currentColor" stroke-width="2">
+  <path d="M40 330 L150 170 L195 322 Z"/><path d="M75 300 L140 215 L162 300 Z"/>
+  <path d="M1170 90C1220 150 1260 190 1300 140S1340 60 1390 120"/>
+  <path d="M1290 60 L1400 40 L1360 160 Z" transform="translate(-120 20)"/>
+  <path d="M30 700 L30 560 M10 640 L300 640"/><path d="M40 650C90 560 140 560 190 660S270 760 300 700"/>
+  <g stroke="none" fill="currentColor" font-family="Times New Roman,serif" font-size="26" font-style="italic">
+    <text x="820" y="70">P(A∩B) = P(A)·P(B|A)</text>
+    <text x="1130" y="800">x̄ = ∑xᵢ / n</text>
+    <text x="70" y="860">σ² = E[(X − μ)²]</text>
+  </g>
+</svg>
 <div class="app">
-<header><h1>Xác Suất AI</h1><p>Trợ lí học Xác suất Thống kê · quy trình 4 bước · chỉ gợi ý chiến lược, không đưa lời giải</p></header>
-<div class="shell">
-<nav id="nav" role="tablist" aria-label="Tính năng"></nav>
-<main id="main"></main>
-</div></div>
+  <div id="home">
+    <span class="pill">Xác suất Thống kê</span>
+    <h1>XÁC SUẤT AI</h1>
+    <p class="sub">Chọn một tính năng học tập để bắt đầu 🧭</p>
+    <div class="cards" id="cards"></div>
+    <p class="foot">Quy trình 4 bước · AI chỉ gợi ý chiến lược, không đưa lời giải</p>
+  </div>
+  <div id="work" hidden>
+    <a class="back" href="#">← Về trang chủ</a>
+    <main id="main"></main>
+  </div>
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="app.js"></script>
 </body>
