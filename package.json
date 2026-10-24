@@ -1,0 +1,9 @@
+{
+  "name": "xac-suat-ai",
+  "version": "1.0.0",
+  "description": "Trợ lí AI học Xác suất Thống kê (Câu 5)",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=20.12" },
+  "license": "MIT"
+}
